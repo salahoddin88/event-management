@@ -9,7 +9,8 @@ class EventAdmin(admin.ModelAdmin):
         'title',
         'event_date_time',
         'max_seats',
-        'booking_open_window',
+        'booking_open_window_start',
+        'booking_open_window_end',
         'status'
     )
     date_hierarchy = 'event_date_time'
