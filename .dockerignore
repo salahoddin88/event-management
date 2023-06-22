@@ -1,7 +1,7 @@
 # Git
 .git
 .gitignore
-
+__resources__
 # Docker
 .docker
 
