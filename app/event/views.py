@@ -90,14 +90,18 @@ class TicketsView(ViewSet):
     permission_classes = (permissions.IsAuthenticated, )
 
     def list(self, request):
-        queryset = Tickets.objects.filter(
+        queryset = Tickets.objects.select_related('event').filter(
             user=request.user
         ).order_by('event__event_date_time')
         serializer = ListTicketSerializer(queryset, many=True)
         return response.Response(serializer.data)
 
     def retrieve(self, request, pk):
-        event = get_object_or_404(self.queryset, pk=pk, user=request.user)
+        event = get_object_or_404(
+            self.queryset.select_related('event'),
+            pk=pk,
+            user=request.user
+        )
         serializer = RetrieveTicketSerializer(event)
         return response.Response(serializer.data)
 
