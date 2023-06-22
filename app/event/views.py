@@ -56,6 +56,22 @@ class EventViewSet(ModelViewSet):
         return response.Response(serializer.data)
 
 
+@extend_schema_view(
+    list=extend_schema(
+        parameters=[
+            OpenApiParameter(
+                'search',
+                OpenApiTypes.STR,
+                description='Search in title and event type',
+            ),
+            OpenApiParameter(
+                'ordering',
+                OpenApiTypes.STR,
+                description='Order by price ASC and DESC',
+            ),
+        ]
+    )
+)
 class ViewEventViewSet(ModelViewSet):
     """ Event Get API to serve list and retrieve to customer """
     serializer_class = EventSerializer
@@ -68,10 +84,10 @@ class ViewEventViewSet(ModelViewSet):
 
 class TicketsView(ViewSet):
     """ Event Tickets API """
-    authentication_classes = (authentication.TokenAuthentication, )
-    permission_classes = (permissions.IsAuthenticated, )
     serializer_class = POSTTicketSerializer
     queryset = Tickets.objects.all()
+    authentication_classes = (authentication.TokenAuthentication, )
+    permission_classes = (permissions.IsAuthenticated, )
 
     def list(self, request):
         queryset = Tickets.objects.filter(
