@@ -1,6 +1,7 @@
 from django.utils import timezone
 from rest_framework import serializers
 from .models import (Events, Tickets)
+from user.serializers import UserDetailsSeializer
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -97,3 +98,41 @@ class POSTTicketSerializer(serializers.ModelSerializer):
                 "No more seats available for this event."
             )
         return attrs
+
+
+class RetrieveWithUserTicketSerializer(serializers.ModelSerializer):
+    """ Ticket Model GET Serializer """
+    user = UserDetailsSeializer()
+
+    class Meta:
+        model = Tickets
+        fields = (
+            'id',
+            'booking_date',
+            'payment_status',
+            'user'
+        )
+
+
+class RetrieveEventSerializer(serializers.ModelSerializer):
+    """ Event Model Serializer """
+    event_tickets = RetrieveWithUserTicketSerializer(many=True)
+
+    class Meta:
+        model = Events
+        fields = (
+            'id',
+            'title',
+            'description',
+            'event_type',
+            'max_seats',
+            'booking_open_window_start',
+            'booking_open_window_end',
+            'event_date_time',
+            'price',
+            'event_tickets',
+        )
+        extra_kwargs = {
+            'created_date': {'read_only': True},
+            'updated_date': {'read_only': True}
+        }
