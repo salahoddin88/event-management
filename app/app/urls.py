@@ -28,7 +28,7 @@ from core import views as core_views
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('', admin.site.urls),
     path('api/health-check/', core_views.HealthCheck.as_view()),
     path('api/schema/', SpectacularAPIView.as_view(), name='api-schema'),
     path(
