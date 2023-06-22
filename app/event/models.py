@@ -24,6 +24,10 @@ class Events(models.Model):
         """ String Representation of Event Object """
         return self.title
 
+    class Meta:
+        verbose_name = "Event"
+        verbose_name_plural = "Events"
+
 
 class Tickets(models.Model):
     class Meta:

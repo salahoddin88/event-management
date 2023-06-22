@@ -1,5 +1,11 @@
 from django.contrib import admin
-from .models import Events
+from .models import (Events, Tickets)
+
+
+class TicketInlines(admin.TabularInline):
+    """ Inlines for Event Tickets """
+    model = Tickets
+    extra = 0
 
 
 @admin.register(Events)
@@ -14,3 +20,6 @@ class EventAdmin(admin.ModelAdmin):
         'status'
     )
     date_hierarchy = 'event_date_time'
+    inlines = (TicketInlines, )
+    search_fields = ('title', )
+    list_filter = ('event_type', )
